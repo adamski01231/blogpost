@@ -1,0 +1,18 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Rest API with typeOrm and GraphQL",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon dist/app.js",
+    "start": "node dist/app.js",
+    "watch": "tsc -w"
+  },
+  "author": "Adam Radwański",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^14.14.6",
+    "nodemon": "^2.0.6",
+    "typescript": "^4.0.5"
+  }
+}
