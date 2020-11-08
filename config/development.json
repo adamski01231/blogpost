@@ -1,0 +1,12 @@
+{
+  "db": {
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "database": "blogpost",
+    "username": "postgres",
+    "synchronize": true,
+    "entities": [ "dist/entities/*.js" ],
+    "migrations": [ "dist/migrations/*.js" ]
+  }
+}
