@@ -1,5 +1,5 @@
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from "typeorm";
 import { Role } from './Role';
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, ManyToOne } from "typeorm";
 
 @Entity()
 export class User extends BaseEntity {
@@ -23,6 +23,9 @@ export class User extends BaseEntity {
 
   @ManyToOne(() => Role, (role) => role.id)
   role!: Role;
+
+  @Column()
+  roleId!: number;
 
   @Column()
   isActive!: boolean;

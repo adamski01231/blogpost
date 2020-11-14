@@ -1,4 +1,4 @@
-import { Entity, BaseEntity, Column, PrimaryColumn } from "typeorm";
+import { Entity, BaseEntity, Column, PrimaryColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Role extends BaseEntity {
@@ -7,4 +7,10 @@ export class Role extends BaseEntity {
 
   @Column()
   label!: string;
+
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
 }

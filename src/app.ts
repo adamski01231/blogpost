@@ -1,17 +1,20 @@
 import 'dotenv/config';
-import { hello } from './hello';
-import connection from './db';
+import conn from './services/_db';
+import { UserService } from './services/UserService';
 
 class App {
   public static async start() {
-    hello('Adam');
-
     try {
-      const conn = await connection();
-      console.log('Db connected');
+      await conn.connect()
+      console.log('Db connected ...');
+
+      const userService = UserService.getInstance(conn);
+
+      const users = await userService.getUsers();
+      console.log(users);
     }
     catch(ex) {
-      console.log(ex.message);
+      console.log(ex);
     }
   }
 }
