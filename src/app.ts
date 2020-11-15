@@ -5,7 +5,7 @@ import { UserService } from './services/UserService';
 class App {
   public static async start() {
     try {
-      await conn.connect()
+      await conn.connect();
       console.log('Db connected ...');
 
       const userService = UserService.getInstance(conn);

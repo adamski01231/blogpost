@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon dist/app.js",
     "start": "node dist/app.js",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "typeorm": "node ./node_modules/typeorm/cli.js"
   },
   "author": "Adam Radwański",
   "license": "ISC",

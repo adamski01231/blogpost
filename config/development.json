@@ -5,8 +5,11 @@
     "port": 5432,
     "database": "blogpost",
     "username": "postgres",
-    "synchronize": true,
+    "synchronize": false,
     "entities": [ "dist/entities/*.js" ],
-    "migrations": [ "dist/migrations/*.js" ]
+    "migrations": [ "dist/migrations/*.js" ],
+    "cli": {
+      "migrationsDir": "migrations"
+    }
   }
 }
