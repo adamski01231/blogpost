@@ -38,7 +38,7 @@ class UserService {
     const role = new Role();
     role.id = userDto.roleId;
     user.role = role;
-    user.isActive = userDto.isActive;
+    user.active = userDto.active;
 
     user = await getRepository(User).save(user);
     return user;
@@ -56,7 +56,7 @@ class UserService {
     const role = new Role();
     role.id = userDto.roleId;
     user.role = role;
-    user.isActive = userDto.isActive;
+    user.active = userDto.active;
 
     user = await getRepository(User).save(user);
     return user;

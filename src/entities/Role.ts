@@ -3,7 +3,7 @@ import { ObjectType, Field, Int } from 'type-graphql';
 import { User } from "./User";
 
 @ObjectType()
-@Entity()
+@Entity({ name: 'roles' })
 export class Role extends BaseEntity {
   @Field(() => Int)
   @PrimaryColumn()
@@ -14,11 +14,11 @@ export class Role extends BaseEntity {
   label!: string;
 
   @Field()
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;
 
   @Field()
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt!: Date;
 
   @Field(() => [User])

@@ -3,7 +3,7 @@ import { Role } from './Role';
 import { ObjectType, Field, Int } from 'type-graphql';
 
 @ObjectType()
-@Entity()
+@Entity({ name: 'users' })
 export class User extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
@@ -31,21 +31,22 @@ export class User extends BaseEntity {
 
   @Field(() => Role)
   @ManyToOne(() => Role, (role) => role.id)
+  @JoinColumn({ name: 'role_id' })
   role!: Role;
 
   @Field()
-  @Column()
+  @Column({ name: 'role_id' })
   roleId!: number;
 
   @Field()
   @Column()
-  isActive!: boolean;
+  active!: boolean;
 
   @Field()
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;
 
   @Field()
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt!: Date;
 }

@@ -5,5 +5,5 @@ export interface CreateUserDto {
   lastname: string,
   email: string,
   roleId: number,
-  isActive: boolean,
+  active: boolean,
 }
