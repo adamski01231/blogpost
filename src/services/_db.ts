@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { ConnectionOptions, getConnectionManager } from 'typeorm';
 import config from 'config';
 

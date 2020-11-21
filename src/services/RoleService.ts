@@ -1,29 +1,26 @@
-import { Repository, Connection } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { Role } from './../entities/Role';
 import { CreateRoleDto } from '../dto/CreateRoleDto';
 
-export class RoleService {
-  private static instance: RoleService | null;
-  private roleRepository: Repository<Role>;
+class RoleService {
+  private static instance: RoleService;
 
-  private constructor(conn: Connection) {
-    this.roleRepository = conn.getRepository(Role);
-  }
+  private constructor() { }
 
-  static getInstance(conn: Connection): RoleService {
+  static getInstance(): RoleService {
     if (!RoleService.instance) {
-      RoleService.instance = new RoleService(conn);
+      RoleService.instance = new RoleService();
     }
     return RoleService.instance
   }
 
   async getRoles() {
-    const roles = await this.roleRepository.find();
+    const roles = await getRepository(Role).find();
     return roles;
   }
 
   async getRole(id: number): Promise<Role> {
-    const role = await this.roleRepository.findOne({ id });
+    const role = await getRepository(Role).findOne({ id });
     if (!role) throw new Error('roleNotFound [getRole]');
     return role;
   }
@@ -34,25 +31,27 @@ export class RoleService {
     role.id = roleDto.id;
     role.label = roleDto.label;
 
-    role = await this.roleRepository.save(role);
+    role = await getRepository(Role).save(role);
     return role;
   }
 
   async updateRole(roleDto: CreateRoleDto): Promise<Role> {
-    let role = await this.roleRepository.findOne({ id: roleDto.id });
+    let role = await getRepository(Role).findOne({ id: roleDto.id });
     if (!role) throw new Error('roleNotFound [updateRole]');
 
     role.label = roleDto.label;
 
-    role = await this.roleRepository.save(role);
+    role = await getRepository(Role).save(role);
     return role;
   }
 
   async deleteRole(id: number): Promise<Role> {
-    const role = await this.roleRepository.findOne({ id });
+    const role = await getRepository(Role).findOne({ id });
     if (!role) throw new Error('roleNotFound [deleteRole]');
 
-    await this.roleRepository.remove(role);
+    await getRepository(Role).remove(role);
     return role;
   }
 }
+
+export default RoleService.getInstance();

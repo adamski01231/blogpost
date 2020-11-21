@@ -1,30 +1,28 @@
-import { Repository, Connection } from "typeorm";
+import { Repository, getRepository } from "typeorm";
 import { User } from "../entities/User";
 import { Role } from "../entities/Role";
 import { CreateUserDto } from "../dto/CreateUserDto";
 
-export class UserService {
-  private static instance: UserService | null;
-  private userRepository: Repository<User>;
+class UserService {
+  private static instance: UserService;
+  private userRepository!: Repository<User>;
 
-  private constructor(conn: Connection) {
-    this.userRepository = conn.getRepository(User);
-  }
+  private constructor() { }
 
-  static getInstance(conn: Connection): UserService {
+  static getInstance(): UserService {
     if (!UserService.instance) {
-      UserService.instance = new UserService(conn);
+      UserService.instance = new UserService();
     }
-    return UserService.instance
+    return UserService.instance;
   }
 
   async getUsers(): Promise<User[]> {
-    const users = await this.userRepository.find();
+    const users = await getRepository(User).find();
     return users;
   }
 
   async getUser(id: number): Promise<User> {
-    const user = await this.userRepository.findOne({ id });
+    const user = await getRepository(User).findOne({ id });
     if (!user) throw new Error('userNotFound [getUser]');
     return user;
   }
@@ -42,12 +40,12 @@ export class UserService {
     user.role = role;
     user.isActive = userDto.isActive;
 
-    user = await this.userRepository.save(user);
+    user = await getRepository(User).save(user);
     return user;
   }
 
   async updateUser(id: number, userDto: CreateUserDto): Promise<User> {
-    let user = await this.userRepository.findOne({ id })
+    let user = await getRepository(User).findOne({ id })
     if (!user) throw new Error('userNotFound [updateUser]');
 
     user.firstname = userDto.firstname;
@@ -60,15 +58,22 @@ export class UserService {
     user.role = role;
     user.isActive = userDto.isActive;
 
-    user = await this.userRepository.save(user);
+    user = await getRepository(User).save(user);
     return user;
   }
 
   async deleteUser(id: number): Promise<User> {
-    const user = await this.userRepository.findOne({ id });
+    const user = await getRepository(User).findOne({ id });
     if (!user) throw new Error('userNotFound [deleteUser]');
 
-    await this.userRepository.remove(user);
+    await getRepository(User).remove(user);
     return user;
   }
+
+  async getUsersByRole(roleId: number): Promise<User[]> {
+    const users = await getRepository(User).find({ roleId });
+    return users;
+  }
 }
+
+export default UserService.getInstance();

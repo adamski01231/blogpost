@@ -1,16 +1,36 @@
+import 'reflect-metadata';
 import 'dotenv/config';
-import conn from './services/_db';
-import { UserService } from './services/UserService';
+import db from './services/_db';
+import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
+import UserService from './services/UserService';
+import { buildSchema } from 'type-graphql';
+import { UserResolver } from './resolvers/User';
+import { RoleResolver } from './resolvers/Role';
 
 class App {
   public static async start() {
     try {
-      await conn.connect();
+      await db.connect();
       console.log('Db connected ...');
 
-      const userService = UserService.getInstance(conn);
+      const port = process.env.PORT || 5000;
+      const app = express();
 
-      const users = await userService.getUsers();
+      const apolloServer = new ApolloServer({
+        schema: await buildSchema({
+          resolvers: [UserResolver, RoleResolver],
+          validate: true,
+        }),
+      });
+
+      apolloServer.applyMiddleware({ app });
+
+      app.listen(port, () => {
+        console.log(`Server listenning on port ${port} ...`);
+      });
+
+      const users = await UserService.getUsers();
       console.log(users);
     }
     catch(ex) {
