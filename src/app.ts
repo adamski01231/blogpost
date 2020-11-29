@@ -1,3 +1,4 @@
+import { PostResolver } from './resolvers/Post';
 import 'reflect-metadata';
 import 'dotenv/config';
 import db from './services/_db';
@@ -19,7 +20,7 @@ class App {
 
       const apolloServer = new ApolloServer({
         schema: await buildSchema({
-          resolvers: [UserResolver, RoleResolver],
+          resolvers: [UserResolver, RoleResolver, PostResolver],
           validate: true,
         }),
       });
