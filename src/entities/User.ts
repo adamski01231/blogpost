@@ -1,5 +1,6 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from "typeorm";
 import { Role } from './Role';
+import { Post } from "./Post";
 import { ObjectType, Field, Int } from 'type-graphql';
 
 @ObjectType()
@@ -29,14 +30,14 @@ export class User extends BaseEntity {
   @Column({ unique: true })
   email!: string;
 
+  @Field()
+  @Column({ name: 'role_id' })
+  roleId!: number;
+
   @Field(() => Role)
   @ManyToOne(() => Role, (role) => role.id)
   @JoinColumn({ name: 'role_id' })
   role!: Role;
-
-  @Field()
-  @Column({ name: 'role_id' })
-  roleId!: number;
 
   @Field()
   @Column()
@@ -49,4 +50,7 @@ export class User extends BaseEntity {
   @Field()
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt!: Date;
+
+  @OneToMany(() => Post, (post) => post.authorId)
+  posts!: Post[];
 }
