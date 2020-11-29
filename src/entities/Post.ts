@@ -7,6 +7,9 @@ export class Post extends BaseEntity {
   id!: number;
 
   @Column()
+  title!: string;
+
+  @Column()
   text!: string;
 
   @Column({ name: 'author_id'})
