@@ -60,6 +60,11 @@ class PostService {
     await getRepository(Post).remove(post);
     return post;
   }
+
+  async getPostsByAuthor(authorId: number): Promise<Post[]> {
+    const posts = await getRepository(Post).find({ authorId });
+    return posts;
+  }
 }
 
 export default PostService.getInstance();

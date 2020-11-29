@@ -51,6 +51,7 @@ export class User extends BaseEntity {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt!: Date;
 
+  @Field(() => [Post])
   @OneToMany(() => Post, (post) => post.authorId)
   posts!: Post[];
 }
