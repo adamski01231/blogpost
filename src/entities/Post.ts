@@ -1,6 +1,7 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
 import { ObjectType, Field, Int } from 'type-graphql';
 import { User } from './User';
+import { Vote } from "./Vote";
 
 @ObjectType()
 @Entity({ name: 'posts' })
@@ -22,9 +23,14 @@ export class Post extends BaseEntity {
   authorId!: number;
 
   @Field(() => User)
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn({ name: 'author_id' })
   author!: User;
+
+  @Field(() => [Vote])
+  @OneToMany(() => Vote, (vote) => vote.post)
+  @JoinColumn({ name: 'post_id' })
+  votes!: Vote[];
 
   @Field()
   @CreateDateColumn({ name: 'created_at' })

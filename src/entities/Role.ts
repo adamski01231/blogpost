@@ -13,6 +13,10 @@ export class Role extends BaseEntity {
   @Column()
   label!: string;
 
+  @Field(() => [User])
+  @OneToMany(() => User, (user) => user.role)
+  users!: User[];
+
   @Field()
   @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;
@@ -20,8 +24,4 @@ export class Role extends BaseEntity {
   @Field()
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt!: Date;
-
-  @Field(() => [User])
-  @OneToMany(() => User, (user) => user.role)
-  users!: User[];
 }
