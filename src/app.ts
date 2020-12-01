@@ -1,13 +1,13 @@
-import { PostResolver } from './resolvers/Post';
 import 'reflect-metadata';
 import 'dotenv/config';
 import db from './services/_db';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
-import UserService from './services/UserService';
 import { buildSchema } from 'type-graphql';
 import { UserResolver } from './resolvers/User';
 import { RoleResolver } from './resolvers/Role';
+import { PostResolver } from './resolvers/Post';
+import { VoteResolver } from './resolvers/Vote';
 
 class App {
   public static async start() {
@@ -20,7 +20,7 @@ class App {
 
       const apolloServer = new ApolloServer({
         schema: await buildSchema({
-          resolvers: [UserResolver, RoleResolver, PostResolver],
+          resolvers: [UserResolver, RoleResolver, PostResolver, VoteResolver],
           validate: true,
         }),
       });
@@ -30,9 +30,6 @@ class App {
       app.listen(port, () => {
         console.log(`Server listenning on port ${port} ...`);
       });
-
-      const users = await UserService.getUsers();
-      console.log(users);
     }
     catch(ex) {
       console.log(ex);

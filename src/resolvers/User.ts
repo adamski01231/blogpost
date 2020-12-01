@@ -3,6 +3,7 @@ import { User } from "../entities/User";
 import UserService from './../services/UserService';
 import RoleService from '../services/RoleService';
 import PostService from '../services/PostService';
+import VoteService from '../services/VoteService';
 
 @Resolver(User)
 export class UserResolver {
@@ -22,5 +23,11 @@ export class UserResolver {
   async posts(@Root() user: User) {
     const posts = await PostService.getPostsByAuthor(user.id);
     return posts;
+  }
+
+  @FieldResolver()
+  async votes(@Root() user: User) {
+    const votes = await VoteService.getVotesByAuthor(user.id);
+    return votes;
   }
 }

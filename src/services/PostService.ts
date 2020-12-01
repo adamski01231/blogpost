@@ -1,6 +1,6 @@
+import { getRepository } from "typeorm";
 import { CreatePostDto } from './../dto/CreatePostDto';
 import { Post } from './../entities/Post';
-import { getRepository } from "typeorm";
 import { User } from '../entities/User';
 
 class PostService {
@@ -15,7 +15,7 @@ class PostService {
     return PostService.instance;
   }
 
-  async getPosts() {
+  async getPosts(): Promise<Post[]> {
     const posts = await getRepository(Post).find();
     return posts;
   }
