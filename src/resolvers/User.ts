@@ -1,9 +1,10 @@
-import { Resolver, Query, FieldResolver, Root } from 'type-graphql';
+import { Resolver, Query, FieldResolver, Root, Mutation, Arg } from 'type-graphql';
 import { User } from "../entities/User";
 import UserService from './../services/UserService';
 import RoleService from '../services/RoleService';
 import PostService from '../services/PostService';
 import VoteService from '../services/VoteService';
+import { CreateUserDto } from './../dto/CreateUserDto';
 
 @Resolver(User)
 export class UserResolver {
@@ -11,6 +12,12 @@ export class UserResolver {
   async users() {
     const users = await UserService.getUsers();
     return users;
+  }
+
+  @Mutation(() => User)
+  async register(@Arg('input') userDto: CreateUserDto) {
+    const user = await UserService.createUser(userDto);
+    return user;
   }
 
   @FieldResolver()
