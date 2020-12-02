@@ -2,6 +2,7 @@ import { Repository, getRepository } from "typeorm";
 import { User } from "../entities/User";
 import { Role } from "../entities/Role";
 import { CreateUserDto } from "../dto/CreateUserDto";
+import bcrypt from 'bcrypt';
 
 class UserService {
   private static instance: UserService;
@@ -33,7 +34,7 @@ class UserService {
     user.firstname = userDto.firstname;
     user.lastname = userDto.lastname;
     user.login = userDto.login;
-    user.password = userDto.password;
+    user.password = await bcrypt.hash(userDto.password, 10);
     user.email = userDto.email;
     const role = new Role();
     role.id = userDto.roleId;
