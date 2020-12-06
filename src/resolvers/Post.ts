@@ -1,4 +1,5 @@
-import { Resolver, Query, FieldResolver, Root, Arg } from "type-graphql";
+import { CreatePostDto } from './../dto/CreatePostDto';
+import { Resolver, Query, FieldResolver, Root, Arg, Mutation } from "type-graphql";
 import { Post } from "../entities/Post";
 import PostService from "../services/PostService";
 import UserService from "../services/UserService";
@@ -15,6 +16,12 @@ export class PostResolver {
   @Query(() => Post)
   async post(@Arg('id') id: number) {
     const post = await PostService.getPost(id);
+    return post;
+  }
+
+  @Mutation(() => Post)
+  async createPost(@Arg('input') postDto: CreatePostDto) {
+    const post = await PostService.createPost(postDto);
     return post;
   }
 
