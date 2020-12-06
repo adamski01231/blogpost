@@ -1,4 +1,4 @@
-import { Resolver, Query, FieldResolver, Root } from "type-graphql";
+import { Resolver, Query, FieldResolver, Root, Arg } from "type-graphql";
 import { Post } from "../entities/Post";
 import PostService from "../services/PostService";
 import UserService from "../services/UserService";
@@ -10,6 +10,12 @@ export class PostResolver {
   async posts() {
     const posts = await PostService.getPosts();
     return posts;
+  }
+
+  @Query(() => Post)
+  async post(@Arg('id') id: number) {
+    const post = await PostService.getPost(id);
+    return post;
   }
 
   @FieldResolver()
