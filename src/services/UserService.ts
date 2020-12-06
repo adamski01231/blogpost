@@ -3,6 +3,9 @@ import { User } from "../entities/User";
 import { Role } from "../entities/Role";
 import { CreateUserDto } from "../dto/CreateUserDto";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import config from 'config';
+import { AuthUser } from './../auth/AuthUser';
 
 class UserService {
   private static instance: UserService;
@@ -26,6 +29,25 @@ class UserService {
     const user = await getRepository(User).findOne({ id });
     if (!user) throw new Error('userNotFound [getUser]');
     return user;
+  }
+
+  async validateLoginCredentials(login: string, password: string): Promise<string> {
+    const user = await getRepository(User).findOne({ login });
+    if (!user) throw new Error('invalidCredentials [validateLoginCredentials]');
+
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) throw new Error('invalidCredentials [validateLoginCredentials]');
+
+    const payload: AuthUser = {
+      id: user.id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      role: user.roleId,
+    }
+
+    const secret: string = config.get('jwtSecret');
+    const token = jwt.sign(payload, secret, { expiresIn: '1h' })
+    return token;
   }
 
   async createUser(userDto: CreateUserDto): Promise<User> {

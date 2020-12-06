@@ -11,6 +11,6 @@
     "cli": {
       "migrationsDir": "migrations"
     },
-    "logging": true
+    "logging": false
   }
 }

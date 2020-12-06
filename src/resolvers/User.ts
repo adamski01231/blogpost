@@ -1,4 +1,4 @@
-import { Resolver, Query, FieldResolver, Root, Mutation, Arg } from 'type-graphql';
+import { Resolver, Query, FieldResolver, Root, Mutation, Arg, ObjectType } from 'type-graphql';
 import { User } from "../entities/User";
 import UserService from './../services/UserService';
 import RoleService from '../services/RoleService';
@@ -24,6 +24,15 @@ export class UserResolver {
   async register(@Arg('input') userDto: CreateUserDto) {
     const user = await UserService.createUser(userDto);
     return user;
+  }
+
+  @Query(() => String)
+  async login(
+    @Arg('login') login: string,
+    @Arg('password')password: string
+  ) {
+    const token = await UserService.validateLoginCredentials(login, password);
+    return token;
   }
 
   @FieldResolver()
